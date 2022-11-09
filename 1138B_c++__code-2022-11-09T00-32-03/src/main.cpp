@@ -59,6 +59,21 @@ void pre_auton(void) {
 /*---------------------------------------------------------------------------*/
 
 void autonomous(void) {
+    
+    flywheel.spin(fORWARD);
+    Drivetrain.driveFor(forward,400,mm);
+    Drivetrain.turnFor(left,11,degrees);
+    wait(2.5,sec);
+    shooter.set(true);
+    wait(0.75,sec);
+    shooter.set(true);
+    wait(0.75,sec);
+    shooter.set(true);
+    wait(0.75,sec);
+    shooter.set(false);
+    wait(0.75,sec);
+    flywheel.stop();
+  
   // ..........................................................................
   // Insert autonomous user code here.
   // ..........................................................................
