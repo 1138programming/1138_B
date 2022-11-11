@@ -8,14 +8,14 @@ using code = vision::code;
 brain  Brain;
 
 // VEXcode device constructors
-motor leftMotorA = motor(PORT12, ratio18_1, false);
-motor leftMotorB = motor(PORT9, ratio18_1, false);
+motor leftMotorA = motor(PORT9, ratio18_1, true);
+motor leftMotorB = motor(PORT12, ratio18_1, true);
 motor_group LeftDriveSmart = motor_group(leftMotorA, leftMotorB);
-motor rightMotorA = motor(PORT11, ratio18_1, true);
-motor rightMotorB = motor(PORT10, ratio18_1, true);
+motor rightMotorA = motor(PORT10, ratio18_1, false);
+motor rightMotorB = motor(PORT11, ratio18_1, false);
 motor_group RightDriveSmart = motor_group(rightMotorA, rightMotorB);
 drivetrain Drivetrain = drivetrain(LeftDriveSmart, RightDriveSmart, 319.19, 295, 40, mm, 1);
-motor intakestorage = motor(PORT1, ratio18_1, false);
+motor intakestorage = motor(PORT1, ratio18_1, true);
 motor flywheelMotorA = motor(PORT3, ratio18_1, false);
 motor flywheelMotorB = motor(PORT4, ratio18_1, false);
 motor_group flywheel = motor_group(flywheelMotorA, flywheelMotorB);
@@ -45,8 +45,8 @@ int rc_auto_loop_function_Controller1() {
       // calculate the drivetrain motor velocities from the controller joystick axies
       // left = Axis3 + Axis1
       // right = Axis3 - Axis1
-      int drivetrainLeftSideSpeed = Controller1.Axis3.position() + Controller1.Axis1.position();
-      int drivetrainRightSideSpeed = Controller1.Axis3.position() - Controller1.Axis1.position();
+      int drivetrainLeftSideSpeed = -Controller1.Axis3.position() + Controller1.Axis1.position();
+      int drivetrainRightSideSpeed = -Controller1.Axis3.position() - Controller1.Axis1.position();
       
       // check if the value is inside of the deadband range
       if (drivetrainLeftSideSpeed < 5 && drivetrainLeftSideSpeed > -5) {
@@ -98,6 +98,14 @@ int rc_auto_loop_function_Controller1() {
         Controller1LeftShoulderControlMotorsStopped = true;
       }
     }
+    //flywheel on button r1
+    if (Controller2.ButtonR1.pressing()) {
+      flywheel.setVelocity(60,percent);
+      flywheel.spin(forward);
+    }
+    else {
+      flywheel.stop();
+    }
     // wait before repeating the process
     wait(20, msec);
   }
@@ -131,6 +139,7 @@ int rc_auto_loop_function_Controller2() {
   }
   return 0;
 }
+
 
 /**
  * Used to initialize code/tasks/devices added using tools in VEXcode Pro.

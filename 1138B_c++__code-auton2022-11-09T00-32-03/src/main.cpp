@@ -1,11 +1,3 @@
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*    Module:       main.cpp                                                  */
-/*    Author:       VEX                                                       */
-/*    Created:      Thu Sep 26 2019                                           */
-/*    Description:  Competition Template                                      */
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
 
 // ---- START VEXCODE CONFIGURED DEVICES ----
 // Robot Configuration:
@@ -43,7 +35,11 @@ competition Competition;
 void pre_auton(void) {
   // Initializing Robot Configuration. DO NOT REMOVE!
   vexcodeInit();
-
+  intakestorage.setVelocity(180,rpm);
+  shooter.set(true);
+  Roller.setVelocity(100,rpm);
+  flywheel.setVelocity(100, rpm);
+  
   // All activities that occur before the competition starts
   // Example: clearing encoders, setting servo positions, ...
 }
@@ -59,20 +55,20 @@ void pre_auton(void) {
 /*---------------------------------------------------------------------------*/
 
 void autonomous(void) {
-    
-    flywheel.spin(fORWARD);
-    Drivetrain.driveFor(forward,400,mm);
-    Drivetrain.turnFor(left,11,degrees);
-    wait(2.5,sec);
-    shooter.set(true);
-    wait(0.75,sec);
-    shooter.set(true);
-    wait(0.75,sec);
-    shooter.set(true);
-    wait(0.75,sec);
-    shooter.set(false);
-    wait(0.75,sec);
-    flywheel.stop();
+  //flywheel.spin(forward);
+  Drivetrain.driveFor(forward,400,mm);
+  Roller.spinFor(forward,1,turns);
+  //Drivetrain.turnFor(left,11,degrees);
+  //wait(2.5,sec);
+  //shooter.set(true);
+ //wait(0.75,sec);
+ //shooter.set(true);
+  //wait(0.75,sec);
+  //shooter.set(true);
+  //wait(0.75,sec);
+  //shooter.set(false);
+ //wait(0.75,sec);
+  //flywheel.stop();
   
   // ..........................................................................
   // Insert autonomous user code here.
@@ -110,9 +106,9 @@ void usercontrol(void) {
     }
     //disc pusher on button r2
     if (Controller2.ButtonR2.pressing()) {
-      shooter.set(true);
-      wait ( 1,sec);
       shooter.set(false);
+      wait ( 1,sec);
+      shooter.set(true);
     }
     //flywheel on button r1
     if (Controller2.ButtonR1.pressing()) {
